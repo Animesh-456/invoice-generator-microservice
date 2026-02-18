@@ -1,7 +1,18 @@
 variable "region" {
-  default = "ap-south-1"
+  type = string
+  description = "Region"
 }
 
 variable "invoice_bucket_name" {
-  default = "invoice-generator-bucket-12345"
+  type = string
+  description = "bucket name for invoices"
+}
+variable "aws_ecs_cluster_name" {
+  type = string
+  description = "ECS cluster name"
+}
+
+variable "aws_ecs_service_name" {
+  type = string
+  description = "ECS service name"
 }

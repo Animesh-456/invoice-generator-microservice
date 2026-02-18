@@ -52,10 +52,16 @@ jobs:
       - name: Force new Deployement
         run: |
           echo "Forcing new deployment on ECS..."
-          aws ecs update-service --cluster invoice-generator-cluster --service invoice-generator-service --force-new-deployment
+          aws ecs update-service \
+          --cluster ${{ secrets.INVOICE_GENERATOR_CLUSTER }} \
+          --service ${{ secrets.INVOICE_GENERATOR_SERVICE}} \
+          --force-new-deployment
 
       - name: Wait for deployent to complete
         timeout-minutes: 15
         run: |
           echo "Waiting for deployment to complete..."
-          aws ecs wait services-stable --cluster invoice-generator-cluster --services invoice-generator-service
+          aws ecs wait services-stable \
+          --cluster ${{ secrets.INVOICE_GENERATOR_CLUSTER }} \
+          --services ${{ secrets.INVOICE_GENERATOR_SERVICE}} \
+          --region ${{ secrets.REGION }}
