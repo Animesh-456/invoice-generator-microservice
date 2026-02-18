@@ -1,0 +1,28 @@
+node_modules/
+.env
+*.log
+.DS_Store
+
+# Local terraform directories
+**/.terraform/*
+
+#.tfstate files
+*.tfstate
+*.tfstate.*
+
+
+# Crash logs
+crash.log
+crash.*.log
+
+
+# Exclude .tfvars files which may contain sensitive data such as API keys
+*.tfvars
+*.tfvars.json
+
+
+# Override files that may contain sensitive data or environment-specific configurations
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json

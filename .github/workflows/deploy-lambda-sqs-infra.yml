@@ -1,0 +1,44 @@
+name: Deploy Lambda and SQS Infrastructure
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - './infra/*'
+      - './.github/workflows/deploy-lambda-sqs-infra.yml'
+      - './lambda/*'
+
+jobs:
+  terraform:
+    name: 'Terraform Apply'
+    runs-on: ubuntu-latest
+    environment: Production # Use GitHub Environments for protection/approvals
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        # Assumes you have AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY secrets
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        working-directory: ./infra
+        run: terraform init -input=false
+
+      - name: Terraform Plan
+        working-directory: ./infra
+        run: terraform plan -out=tfplan
+        
+      - name: Terraform Apply
+        working-directory: ./infra
+        run: terraform apply -auto-approve
