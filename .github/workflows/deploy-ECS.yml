@@ -64,4 +64,4 @@ jobs:
           aws ecs wait services-stable \
           --cluster ${{ secrets.INVOICE_GENERATOR_CLUSTER }} \
           --services ${{ secrets.INVOICE_GENERATOR_SERVICE}} \
-          --region ${{ secrets.REGION }}
+          --region ${{ secrets.AWS_REGION }}
