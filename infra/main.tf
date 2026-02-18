@@ -292,7 +292,7 @@ resource "aws_iam_role_policy_attachment" "attach_custom_policy" {
 
 # Simply specify the family to find the latest ACTIVE revision in that family.
 resource "aws_ecs_cluster" "testCluster" {
-  name = "testCluster"
+  name = "invoice-generator-cluster"
 }
 
 resource "aws_ecs_task_definition" "ts" {
@@ -354,7 +354,7 @@ resource "aws_security_group" "ecs_tasks" {
 }
 
 resource "aws_ecs_service" "ts" {
-  name          = "invoice-generator"
+  name          = "invoice-generator-service"
   cluster       = aws_ecs_cluster.testCluster.id
   desired_count = 1
 

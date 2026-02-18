@@ -41,4 +41,21 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/invoice-generator:latest
 
-      
+      - name: Configure AWS Credentials
+        # Assumes you have AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY secrets
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Force new Deployement
+        run: |
+          echo "Forcing new deployment on ECS..."
+          aws ecs update-service --cluster invoice-generator-cluster --service invoice-generator-service --force-new-deployment
+
+      - name: Wait for deployent to complete
+        timeout-minutes: 15
+        run: |
+          echo "Waiting for deployment to complete..."
+          aws ecs wait services-stable --cluster invoice-generator-cluster --services invoice-generator-service
