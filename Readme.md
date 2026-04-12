@@ -57,7 +57,7 @@ Lambda Function  ──────► SQS FIFO Queue
 Before deploying, set the following Terraform variables (e.g. in a `terraform.tfvars` file):
 
 ```hcl
-region               = "us-east-1"
+region               = "ap-south-1"
 aws_ecs_cluster_name = "invoice-cluster"
 aws_ecs_service_name = "invoice-service"
 invoice_bucket_name  = "my-invoices-bucket"
