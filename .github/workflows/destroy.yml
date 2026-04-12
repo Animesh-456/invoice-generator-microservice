@@ -1,18 +1,12 @@
-name: Deploy Lambda and SQS Infrastructure
+name: Destroy Infrastructure
 
 on:
-  # push:
-  #   branches:
-  #     - master
-  #   paths:
-  #     - './infra/*'
-  #     - './.github/workflows/deploy-lambda-sqs-infra.yml'
-  #     - './lambda/*'
   workflow_dispatch: # Allow manual trigger from GitHub Actions UI
 
+
 jobs:
-  terraform:
-    name: 'Terraform Apply'
+  terraform_destroy:
+    name: 'Terraform Destroy'
     runs-on: ubuntu-latest
     environment: Production # Use GitHub Environments for protection/approvals
 
@@ -42,12 +36,8 @@ jobs:
 
       - name: Terraform Init
         working-directory: ./infra
-        run: terraform init -reconfigure
+        run: terraform init -input=false
 
-      - name: Terraform Plan
+      - name: Terraform Destroy
         working-directory: ./infra
-        run: terraform plan -out=tfplan
-        
-      - name: Terraform Apply
-        working-directory: ./infra
-        run: terraform apply -auto-approve tfplan
+        run: terraform destroy -auto-approve

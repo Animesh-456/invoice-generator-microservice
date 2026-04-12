@@ -6,13 +6,14 @@
 
 name : Deploy to ECS
 on:
-  push:
-    branches:
-      - master
-    paths-ignore:
-      - './infra/*'
-      - './.github/workflows/deploy-lambda-sqs-infra.yml'
-      - './lambda/*'
+  # push:
+  #   branches:
+  #     - master
+  #   paths-ignore:
+  #     - './infra/*'
+  #     - './.github/workflows/deploy-lambda-sqs-infra.yml'
+  #     - './lambda/*'
+  workflow_dispatch: # Allow manual trigger from GitHub Actions UI
       
 
 jobs:
@@ -22,7 +23,7 @@ jobs:
 
     steps:
       - name: Checkout repo.
-        uses: actions/checkou@v4
+        uses: actions/checkout@v4
     
       - name: Login to Dockerhub
         uses: docker/login-action@v3
