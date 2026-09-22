@@ -162,6 +162,21 @@ To destroy all provisioned resources:
 terraform destroy
 ```
 
+
+## Deliverables for advancing this project
+
+1. It will check if RDS contains the order_id
+
+if yes then check the status - mail_sent, queued, or procesing then accordingly send to SQS do not create any record in RDS 
+if no then create a record in RDS and send to SQS
+
+2. When worker pull job from SQS it will 
+check if the file exists in S3  - if yes then send mail and update RDS with mail_sent
+update RDS with processing
+generate pdf and upload to S3 then update RDS with generated then send mail via SES then update the status to mail_sent
+
+Three status - queued, processing, generated, mail_sent
+
 > ⚠️ This will permanently delete the S3 bucket and all invoices stored within it. Back up any important files before destroying.
 
 ---

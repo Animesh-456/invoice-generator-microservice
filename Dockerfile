@@ -1,22 +1,25 @@
-FROM node:18-slim
+FROM node:18-slim AS dependencies
 
-# Install wkhtmltopdf and dependencies in one layer
-RUN apt-get update && apt-get install -y \
-    wkhtmltopdf \
-    fonts-dejavu \
-    fonts-liberation \
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev
+
+FROM node:18-slim AS production
+
+ENV NODE_ENV=production
+WORKDIR /app
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        wkhtmltopdf \
+        fonts-dejavu \
+        fonts-liberation \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 
-WORKDIR /app
-
-# Copy package files
-COPY package*.json ./
-
-# Install dependencies
-RUN npm ci --only=production
-
-# Copy source code
-COPY . .
+COPY --from=dependencies /app/node_modules ./node_modules
+COPY package.json ./
+COPY src ./src
+COPY templates ./templates
 
 CMD ["node", "src/index.js"]

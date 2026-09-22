@@ -4,13 +4,11 @@ import Handlebars from "handlebars";
 import fs from "fs";
 import path from "path";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import crypto from "crypto";
 
 const s3 = new S3Client({ region: "ap-south-1" });
 
 export async function generateInvoiceAndUpload(data) {
-  // Generate unique invoice name
-  const invoiceId = crypto.randomUUID();
+  const invoiceId = data.order_id;
   const year = new Date().getFullYear();
   const month = String(new Date().getMonth() + 1).padStart(2, "0");
 
@@ -61,7 +59,8 @@ export async function generateInvoiceAndUpload(data) {
       Bucket: process.env.INVOICE_BUCKET,
       Key: s3Key,
       Body: pdfBuffer,
-      ContentType: "application/pdf"
+      ContentType: "application/pdf",
+      ServerSideEncryption: "AES256",
     })
   );
   
@@ -70,6 +69,5 @@ export async function generateInvoiceAndUpload(data) {
   return {
     invoice_id: invoiceId,
     s3_key: s3Key,
-    s3_url: `https://${process.env.INVOICE_BUCKET}.s3.amazonaws.com/${s3Key}`
   };
 }

@@ -17,12 +17,16 @@ jobs:
     environment: Production # Use GitHub Environments for protection/approvals
 
     env:
-      # These override the defaults in variables.tf
-      TF_VAR_environment: production
-      TF_VAR_aws_region: ${{ secrets.AWS_REGION }}
+      # Match the exact Terraform variable names defined in infra/variables.tf
+      TF_VAR_region: ${{ secrets.AWS_REGION }}
       TF_VAR_invoice_bucket_name: ${{ secrets.INVOICE_BUCKET_NAME }}
       TF_VAR_aws_ecs_cluster_name: ${{ secrets.INVOICE_GENERATOR_CLUSTER }}
       TF_VAR_aws_ecs_service_name: ${{ secrets.INVOICE_GENERATOR_SERVICE }}
+      TF_VAR_db_name: ${{ secrets.DB_NAME }}
+      TF_VAR_db_user: ${{ secrets.DB_USER }}
+      TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
+      TF_VAR_ses_from_email: ${{ secrets.SES_FROM_EMAIL }}
+      TF_VAR_invoice_url_ttl_seconds: "3600"
     
     steps:
       - name: Checkout repository
