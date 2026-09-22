@@ -7,13 +7,13 @@ terraform {
   }
 
 
-  # backend "s3" {
-  #   bucket = "tfremotestate-invoice-generator"
-  #   key    = "state"
-  #   region = "ap-south-1"
-  #   //dynamodb_table = "tfremotestate-invoice-generator"
-  #   use_lockfile = true
-  # }
+  backend "s3" {
+    bucket = "tfremotestate-invoice-generator"
+    key    = "state"
+    region = "ap-south-1"
+    //dynamodb_table = "tfremotestate-invoice-generator"
+    use_lockfile = true
+  }
 }
 
 provider "aws" {
